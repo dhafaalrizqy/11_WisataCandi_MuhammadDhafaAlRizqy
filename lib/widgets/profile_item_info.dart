@@ -1,30 +1,51 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 
-import 'package:wisata_candi/main.dart';
+class ProfileInfoItem extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+  final bool showEditIcon;
+  final VoidCallback? onEditPressed;
+  final Color iconColor;
 
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  const ProfileInfoItem(
+      {super.key,
+      required this.icon,
+      required this.label,
+      required this.value,
+      this.showEditIcon = false,
+      this.onEditPressed,
+      required this.iconColor});
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 3,
+          child: Row(
+            children: [
+              Icon(icon, color: iconColor),
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Text(
+            ': $value',
+            style: const TextStyle(fontSize: 18),
+          ),
+        ),
+        if (showEditIcon)
+          InkWell(onTap: onEditPressed, child: const Icon(Icons.edit)),
+      ],
+    );
+  }
 }
